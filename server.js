@@ -6,7 +6,7 @@ const app = express()
 // mongodb://localhost/urlShortener
 // mongodb+srv://sk4tan:ZenithElPrimero%4036,000@cluster0.gbhoq.mongodb.net/test?retryWrites=true&w=majority
 
-mongoose.connect('mongodb+srv://sk4tan:ZenithElPrimero%4036,000@cluster0.gbhoq.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect(process.env.DB_CONN_STRING, {
   useNewUrlParser: true, useUnifiedTopology: true
 })
 
