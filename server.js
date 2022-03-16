@@ -4,6 +4,7 @@ const ShortUrl = require('./models/shortUrl')
 const app = express()
 
 // mongodb://localhost/urlShortener
+// $Env:DB_CONN_STRING = "mongodb://localhost/urlShortener"
 // mongodb+srv://sk4tan:ZenithElPrimero%4036,000@cluster0.gbhoq.mongodb.net/test?retryWrites=true&w=majority
 
 mongoose.connect(process.env.DB_CONN_STRING, {
@@ -33,5 +34,7 @@ app.get('/:shortUrl', async (req, res) => {
 
   res.redirect(shortUrl.full)
 })
+
+app.use(express.static('public'))
 
 app.listen(process.env.PORT || 5000);
