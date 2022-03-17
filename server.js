@@ -5,7 +5,6 @@ const app = express()
 
 // mongodb://localhost/urlShortener
 // $Env:DB_CONN_STRING = "mongodb://localhost/urlShortener"
-// mongodb+srv://sk4tan:ZenithElPrimero%4036,000@cluster0.gbhoq.mongodb.net/test?retryWrites=true&w=majority
 
 mongoose.connect(process.env.DB_CONN_STRING, {
   useNewUrlParser: true, useUnifiedTopology: true
@@ -14,12 +13,15 @@ mongoose.connect(process.env.DB_CONN_STRING, {
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 
-app.get('/', async (req, res) => {
+app.use(express.static('public'))
+
+app.get('/api/urls', async (req, res) => {
   const shortUrls = await ShortUrl.find()
-  res.render('index', { shortUrls: shortUrls })
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ shortUrls: shortUrls }));
 })
 
-app.post('/shortUrls', async (req, res) => {
+app.post('/api/urls', async (req, res) => {
   await ShortUrl.create({ full: req.body.fullUrl })
 
   res.redirect('/')
@@ -35,6 +37,5 @@ app.get('/:shortUrl', async (req, res) => {
   res.redirect(shortUrl.full)
 })
 
-app.use(express.static('public'))
 
 app.listen(process.env.PORT || 5000);
